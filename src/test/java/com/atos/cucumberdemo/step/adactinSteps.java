@@ -1,6 +1,7 @@
 package com.atos.cucumberdemo.step;
 
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -197,7 +198,7 @@ public class adactinSteps {
         element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("select_form")));
         for (Object object : results) {
             element = webDriver.findElement(By.xpath("//input[@value='" + object.toString() + "']"));
-            //System.out.println(element.getAttribute("value"));
+            System.out.println(element.getAttribute("value"));
             assertEquals(element.getAttribute("value").toLowerCase(), object.toString().toLowerCase());
 
         }
@@ -208,7 +209,7 @@ public class adactinSteps {
         int price = 125 * adults * no_rooms;
         WebElement element = webDriver.findElement(By.id("total_price_0"));
         assertEquals("AUD $ " + price + "", element.getAttribute("value"));
-        //System.out.println(element.getAttribute("value"));
+        System.out.println(element.getAttribute("value"));
     }
 
     @And("^I want to logout and verify that I am logged out$")
@@ -257,5 +258,86 @@ public class adactinSteps {
                 assertEquals(element.getAttribute("value").toLowerCase(), object.toString().toLowerCase());
             }
         }
+    }
+
+    @And("^the total price should be \"([^\"]*)\"$")
+    public void theTotalPriceShouldBe(String price) throws Throwable {
+        WebElement element = webDriver.findElement(By.id("final_price_dis"));
+        assertEquals(price, element.getAttribute("value"));
+        System.out.println(element.getAttribute("value"));
+    }
+
+    @And("^I fill in first name \"([^\"]*)\"$")
+    public void iFillInFirstName(String firstname) throws Throwable {
+        WebElement element = webDriver.findElement(By.id("first_name"));
+        element.sendKeys(firstname);
+    }
+
+    @And("^I fill in last name \"([^\"]*)\"$")
+    public void iFillInLastName(String lastname) throws Throwable {
+        WebElement element = webDriver.findElement(By.id("last_name"));
+        element.sendKeys(lastname);
+    }
+
+    @And("^I fill in address \"([^\"]*)\"$")
+    public void iFillInAddress(String adres) throws Throwable {
+        WebElement element = webDriver.findElement(By.id("address"));
+        element.sendKeys(adres);
+    }
+
+    @And("^I fill in creditcard number \"([^\"]*)\"$")
+    public void iFillInCreditcardNumber(String creditcardnumber) throws Throwable {
+        WebElement element = webDriver.findElement(By.id("cc_num"));
+        element.sendKeys(creditcardnumber);
+    }
+
+    @And("^I select creditcard type \"([^\"]*)\"$")
+    public void iSelectCreditcardType(String creditcardtype) throws Throwable {
+        this.results.add(creditcardtype);
+        WebElement element = webDriver.findElement(By.id("cc_type"));
+        element.click();
+        element.sendKeys(creditcardtype);
+    }
+
+    @And("^I select creditcard month \"([^\"]*)\"$")
+    public void iSelectCreditcardMonth(String cc_month) throws Throwable {
+        this.results.add(cc_month);
+        WebElement element = webDriver.findElement(By.id("cc_exp_month"));
+        element.click();
+        element.sendKeys(cc_month);
+    }
+
+    @And("^I select creditcard year \"([^\"]*)\"$")
+    public void iSelectCreditcardYear(String cc_year) throws Throwable {
+        this.results.add(cc_year);
+        WebElement element = webDriver.findElement(By.id("cc_exp_year"));
+        element.click();
+        element.sendKeys(cc_year);
+    }
+
+    @And("^I fill in CVV \"([^\"]*)\"$")
+    public void iFillInCVV(String cvv) throws Throwable {
+        WebElement element = webDriver.findElement(By.id("cc_cvv"));
+        element.sendKeys(cvv);
+    }
+
+    @And("^there should be an order number$")
+    public void thereShouldBeAnOrderNumber() throws Throwable {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("order_no")));
+       // WebElement element = webDriver.findElement(By.id("order_no"));
+        //String ordernummer = element.getAttribute("value");
+        assertEquals(10,element.getAttribute("value").length());
+        if (element.getAttribute("value").length() > 0 ) {
+            System.out.println(element.getAttribute("value"));
+        }
+    }
+
+    @And("^I click Book Now$")
+    public void iClickBookNow() throws Throwable {
+        WebElement element = webDriver.findElement(By.id("book_now"));
+        element.click();
+       // WebDriverWait wait = new WebDriverWait(webDriver, 10);
+       // WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("checkin_span")));
     }
 }
